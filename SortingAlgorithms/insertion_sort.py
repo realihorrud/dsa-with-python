@@ -15,7 +15,6 @@ def insertion_sort(lst):
 data_list = [randint(1, 10_000) for i in range(1, 10)]
 print(f"Unsorted List: {data_list}")
 
-# Sort the list in descending direction
 result = insertion_sort(data_list)
 
 print(result)
