@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class Node:
     def __init__(self, data):
         self.data = data
@@ -116,6 +119,45 @@ def if_node_exists(root, target):
         return True
 
 
+def find_parent(root, target, parent):
+    if root is None:
+        return -1
+
+    if root.data == target:
+        return parent
+
+    left_search = find_parent(root.left, target, root.data)
+
+    if left_search != -1:
+        return left_search
+
+    return find_parent(root.right, target, root.data)
+
+
+def inersert_node(root, data):
+    if root is None:
+        root = Node(data)
+        return root
+
+    q = deque()
+    q.append(root)
+
+    while q:
+        current = q.popleft()
+
+        if current.left is not None:
+            q.append(current.left)
+        else:
+            current.left = Node(data)
+            return root
+
+        if current.right is not None:
+            q.append(current.right)
+        else:
+            current.right = Node(data)
+            return root
+
+
 if __name__ == "__main__":
     # Create binary tree
     #      1
@@ -157,3 +199,8 @@ if __name__ == "__main__":
     print("Height of the given Binary Tree is:", height(root))
     print("Level of the given Binary Tree:", get_level(root, 3, 0))
     print("If the given node in Binary Tree exists:", if_node_exists(root, 600))
+    print("Parent of 600 is:", find_parent(root, 600, -1))
+
+    key = 1000
+    root = inersert_node(root, key)
+    print(level_order(root))
