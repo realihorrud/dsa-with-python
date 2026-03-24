@@ -16,7 +16,7 @@ class Queue:
         if self.is_full():
             print("Queue is already full!")
             return None
-        self.rear += 1
+        self.rear = (self.rear + 1) % self.capacity
         self.queue[self.rear] = item
         self.count += 1
 
@@ -26,7 +26,7 @@ class Queue:
             return None
         item_removed = self.queue[self.front]
         self.queue[self.front] = None
-        self.front += 1
+        self.front = (self.front + 1) % self.capacity
         self.count -= 1
         return item_removed
 
@@ -54,6 +54,13 @@ queue1.display()
 
 # Remove one element
 print(f"Item removed: {queue1.dequeue()}")
+print(f"Item removed: {queue1.dequeue()}")
+
+queue1.enqueue(1)
+queue1.enqueue(2)
+queue1.enqueue(3)
+queue1.enqueue(4)
+queue1.enqueue(5)
 
 # Display the queue again
 queue1.display()

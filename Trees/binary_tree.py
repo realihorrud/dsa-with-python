@@ -1,0 +1,159 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+def in_order(node, res):
+    if node is None:
+        return
+
+    # Traverse the left subtree first
+    in_order(node.left, res)
+
+    # Visit the current node
+    res.append(node.data)
+
+    # Traverse the right subtree last
+    in_order(node.right, res)
+
+
+def pre_order(node, res):
+    if node is None:
+        return
+
+    # Visit the current node first
+    res.append(node.data)
+
+    # Traverse the left subtree
+    pre_order(node.left, res)
+
+    # Traverse the right subtree
+    pre_order(node.right, res)
+
+
+def post_order(node, res):
+    if node is None:
+        return
+
+    # First we traverse left subtree
+    post_order(node.left, res)
+
+    # After visiting left, traverse right subtree
+    post_order(node.right, res)
+
+    # now we visit node
+    res.append(node.data)
+
+
+def level_order_rec(root, level, res):
+    # Base case
+    if root is None:
+        return
+
+    # Add a new level to the result if needed
+    if len(res) <= level:
+        res.append([])
+
+    # Add current node's data to its corresponding level
+    res[level].append(root.data)
+
+    # Recur for left and right children
+    level_order_rec(root.left, level + 1, res)
+    level_order_rec(root.right, level + 1, res)
+
+# Function to perform level order traversal
+
+
+def level_order(root):
+    # Stores the result level by level
+    res = []
+    level_order_rec(root, 0, res)
+    return res
+
+
+def height(node):
+    if node is None:
+        return -1
+
+    l_height = height(node.left)
+    r_height = height(node.right)
+
+    result = max(l_height, r_height) + 1
+
+    return result
+
+
+def get_level(root, target, level):
+    if root is None:
+        return -1
+
+    if root.data == target:
+        return level
+
+    # Recursively call for left and right subtrees
+    left_level = get_level(root.left, target, level + 1)
+    if left_level != -1:
+        return left_level
+
+    return get_level(root.right, target, level + 1)
+
+
+def if_node_exists(root, target):
+    if root is None:
+        return False
+
+    if root.data == target:
+        return True
+
+    res1 = if_node_exists(root.left, target)
+    if res1:
+        return True
+
+    res2 = if_node_exists(root.right, target)
+    if res2:
+        return True
+
+
+if __name__ == "__main__":
+    # Create binary tree
+    #      1
+    #     / \
+    #    2       3
+    #   /  \    / \
+    #  4    5  50  6
+    # /  \    / \
+    # 40  50  500 600
+    root = Node(1)
+
+    root.left = Node(2)
+    root.left.left = Node(4)
+    root.left.right = Node(5)
+    root.left.left.left = Node(40)
+    root.left.left.right = Node(50)
+
+    root.right = Node(3)
+    root.right.left = Node(50)
+    root.right.right = Node(6)
+    root.right.left.left = Node(500)
+    root.right.left.right = Node(600)
+
+    res = []
+    # in_order(root, res)
+    # pre_order(root, res)
+    post_order(root, res)
+
+    for node in res:
+        print(node, end=" ")
+
+    print()
+
+    res = level_order(root)
+
+    for level in res:
+        print(' '.join(map(str, level)))
+
+    print("Height of the given Binary Tree is:", height(root))
+    print("Level of the given Binary Tree:", get_level(root, 3, 0))
+    print("If the given node in Binary Tree exists:", if_node_exists(root, 600))
