@@ -157,6 +157,76 @@ def inersert_node(root, data):
             current.right = Node(data)
             return root
 
+def delete_deepest_node(root, d_node):
+    queue = [root]
+
+    while queue:
+        current = queue.pop(0)
+
+        if current == d_node:
+            current = None
+            del d_node
+            return
+
+        if current.right:
+            if current.right == d_node:
+                current.right = None
+                del d_node
+                return
+            queue.append(current.right)
+
+        if current.left:
+            if current.left == d_node:
+                current.left = None
+                del d_node
+                return
+            queue.append(current.left)
+            
+        
+
+def delete_node(root, key):
+    if root is None:
+        return
+
+    if root.left is None and root.right is None:
+        if root.data == key:
+            return None
+        else:
+            return root
+    queue = [root]
+    curr = None
+    keyNode = None
+
+    # Level order traversal to find the
+    # deepest node and the key node
+    while queue:
+        curr = queue.pop(0)
+
+        # If current node is the key node
+        if curr.data == key:
+            keyNode = curr
+
+        if curr.left:
+            queue.append(curr.left)
+
+        if curr.right:
+            queue.append(curr.right)
+
+    # If key node is found, replace its
+    # data with the deepest node
+    if keyNode is not None:
+      
+        x = curr.data
+        
+        # Replace key node data with 
+        # deepest node's data
+        keyNode.data = x
+        
+        # Delete the deepest node
+        delete_deepest_node(root, curr)
+
+    return root
+    
 
 if __name__ == "__main__":
     # Create binary tree
@@ -203,4 +273,7 @@ if __name__ == "__main__":
 
     key = 1000
     root = inersert_node(root, key)
+    print(level_order(root))
+
+    delete_node(root, key)
     print(level_order(root))
