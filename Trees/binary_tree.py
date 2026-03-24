@@ -227,6 +227,20 @@ def delete_node(root, key):
 
     return root
     
+def print_leaf_nodes(root):
+    if (not root):
+        return
+    
+    if (not root.left and not root.right):
+        print(root.data, end = " ")
+        return
+    
+    if root.left:
+        print_leaf_nodes(root.left)
+
+    if root.right:
+        print_leaf_nodes(root.right)
+        
 
 if __name__ == "__main__":
     # Create binary tree
@@ -277,3 +291,7 @@ if __name__ == "__main__":
 
     delete_node(root, key)
     print(level_order(root))
+
+    print("Leaf nodes")
+    print_leaf_nodes(root)
+    print()
